@@ -1,6 +1,31 @@
 require 'award'
 
+def update_expiration(award)
+  award.expires_in -= 1 
+end
 
+def blue_first_update(award)
+  if award.expires_in > 0 && award.quality < 50
+    award.quality += 1 
+  elsif award.expires_in <= 0 && award.quality < 50
+    if award.quality >= 48
+      award.quality = 50 
+    else 
+      award.quality += 2
+    end
+  end 
+
+  update_expiration(award)
+  return award 
+end 
+
+def update_quality(awards)
+  awards.each do |award| 
+    if award.name == 'Blue First'
+      blue_first_update(award)
+    end 
+  end 
+end 
 
 
 # def update_quality(awards)
