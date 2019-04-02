@@ -40,6 +40,20 @@ def blue_distinction_update(award)
   return award 
 end 
 
+def normal_award_update(award)
+  if award.expires_in > 0 && award.quality > 0 
+    award.quality -= 1
+  elsif award.expires_in <= 0 && award.quality > 0 
+    if award.quality <= 2 
+      award.quality = 0
+    else 
+      award.quality -= 2
+    end 
+  end 
+  update_expiration(award)
+  return award 
+end
+
 def update_quality(awards)
   awards.each do |award| 
     if award.name == 'Blue First'
@@ -48,7 +62,9 @@ def update_quality(awards)
       blue_compare_update(award)
     elsif award.name == 'Blue Distinction Plus'
       blue_distinction_update(award)
-    end 
+    else 
+      normal_award_update(award)
+    end
   end 
 end 
 
